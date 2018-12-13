@@ -118,6 +118,32 @@ int		key_hook(int keycode, void *hook_param)
 		img_fdf(p->img, p->fdf, p->param);
 		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img->img_ptr, 0, 100);
 	}
+	else if (keycode >= 123 && keycode <= 126)
+	{
+		if (keycode == 123)			//	left arrow
+			p->param->origin.x -= 15;
+		else if (keycode == 124)	//	right arrow
+			p->param->origin.x += 15;
+		else if (keycode == 125)	//	down arrow
+			p->param->origin.y += 15;
+		else if (keycode == 126)	//	up arrow
+			p->param->origin.y -= 15;
+		img_destroy(p->img);
+		p->img = img_init(p->mlx_ptr, 2000, 1000);
+		img_fdf(p->img, p->fdf, p->param);
+		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img->img_ptr, 0, 100);
+	}
+	else if (keycode == 67 || keycode == 75)
+	{
+		if (keycode == 67)
+			++(p->param->altitude);
+		else if (keycode == 75)
+			--(p->param->altitude);
+		img_destroy(p->img);
+		p->img = img_init(p->mlx_ptr, 2000, 1000);
+		img_fdf(p->img, p->fdf, p->param);
+		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img->img_ptr, 0, 100);
+	}
 	return (0);
 }
 
@@ -152,10 +178,12 @@ int		main(int argc, char **argv)
 	param.rot[2][1] = 0;
 	param.rot[2][2] = 1;
 //	rot_z(&(param.rot), 1);
-	param.altitude = 1;
-	param.origin.x = 0.;
-	param.origin.y = 0.;
-	param.origin.z = 0.;
+	param.altitude = 5;
+//	param.origin.x = 0.;
+//	param.origin.y = 0.;
+//	param.origin.z = 0.;
+	param.origin.x = 1000;
+	param.origin.y = 500;
 	param.proj = proj_o;
 
 	void	*mlx_ptr = mlx_init();
@@ -170,6 +198,7 @@ int		main(int argc, char **argv)
 
 	t_hook_param	hook_param = {mlx_ptr, win_ptr, img, &fdf, &param};
 
+	mlx_do_key_autorepeaton(mlx_ptr);
 	mlx_key_hook(win_ptr, key_hook, &hook_param);
 	mlx_loop(mlx_ptr);
 	return (0);

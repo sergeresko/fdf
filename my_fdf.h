@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 17:27:27 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/13 15:26:00 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/13 18:46:45 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ typedef struct	s_param
 	double		zoom;
 	t_matrix	rot;
 	int			altitude;
-	t_point3d	origin;
+//	t_point3d	origin;
+	t_pixel		origin;
 	t_pixel		(*proj)(t_fdf *fdf, int x, int y, struct s_param *param);
 }				t_param;
 
