@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/12/14 15:33:44 by syeresko          #+#    #+#             */
+/*   Updated: 2018/12/14 15:34:01 by syeresko         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mlx.h"
 #include <stdlib.h>		// for exit
 #include "my_fdf.h"
@@ -47,103 +59,71 @@ t_pixel		proj_c(t_fdf *fdf, int x, int y, t_param *param)
 	return (proj_central(to3d(fdf, x, y, param), param));
 }
 
-int		key_hook(int keycode, void *hook_param)
+//int		key_press_shift(int keycode, void *hook_param)
+//{
+//}
+
+int		key_press(int keycode, void *hook_param)
 {
 	t_hook_param	*p;
 
 	p = (t_hook_param *)hook_param;
 //	ft_printf("%3d\n", keycode);
-	if (keycode == 53) // ESC
-		exit(0);
-	if (keycode == 24 || keycode == 27)
+	if (keycode == 53)				//	ESC
 	{
-		img_destroy(p->img);
-		if (keycode == 24)			// =
-			p->param->zoom *= 1.1;
-		else						// -
-			p->param->zoom /= 1.1;
-		p->img = img_init(p->mlx_ptr, 2000, 1000);
-		img_fdf(p->img, p->fdf, p->param);
-		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img->img_ptr, 0, 100);
+		system("leaks a.out");
+		exit(0);
 	}
+	if (keycode == 24)				//	=
+		p->param->zoom *= 1.1;
+	else if (keycode == 27)			//	-
+		p->param->zoom /= 1.1;
 	else if (keycode == 7 || keycode == 1 || keycode == 16 || keycode == 22 ||
 		keycode == 6 || keycode == 0)
 	{
 		int		axis;
 		double	angle;
 
-		if (keycode == 7 || keycode == 1)
+		if (keycode == 7 || keycode == 1)			//	x or s
 			axis = AXIS_X;
-		else if (keycode == 16 || keycode == 22)
+		else if (keycode == 16 || keycode == 22)	//	y or 6
 			axis = AXIS_Y;
-		else
+		else										//	z or a
 			axis = AXIS_Z;
 		if (keycode == 7 || keycode == 16 || keycode == 6)
 			angle = M_PI / 30.;
 		else
 			angle = -M_PI / 30.;
-
-		img_destroy(p->img);
-		/*
-		if (keycode == 7)			//	x
-			rotate(&(p->param->rot), AXIS_X, M_PI / 30.);
-		else if (keycode == 1)		//	s
-			rotate(&(p->param->rot), AXIS_X, -M_PI / 30.);
-//		else if (keycode == 16 || keycode == 22)	// y or 6
-//			rot_y(&(p->param->rot), (keycode == 16) ? 1 : -1);
-//		else										// z or a
-//			rot_z(&(p->param->rot), (keycode == 6) ? 1 : -1);
-		else if (keycode == 16)		//	y
-			rotate(&(p->param->rot), AXIS_Y, M_PI / 30.);
-		else if (keycode == 22)		//	6
-			rotate(&(p->param->rot), AXIS_Y, -M_PI / 30.);
-		else if (keycode == 6)		//	z
-			rotate(&(p->param->rot), AXIS_Z, M_PI / 30.);
-		else if (keycode == 0)		//	a
-			rotate(&(p->param->rot), AXIS_Z, -M_PI / 30.);
-		*/
 		rotate(&(p->param->rot), axis, angle);
-		p->img = img_init(p->mlx_ptr, 2000, 1000);
-		img_fdf(p->img, p->fdf, p->param);
-		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img->img_ptr, 0, 100);
 	}
-	else if (keycode == 31 || keycode == 8)
-	{
-		if (keycode == 31)			//	o
-			p->param->proj = proj_o;
-		else if (keycode == 8)		//	c
-			p->param->proj = proj_c;
-		img_destroy(p->img);
-		p->img = img_init(p->mlx_ptr, 2000, 1000);
-		img_fdf(p->img, p->fdf, p->param);
-		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img->img_ptr, 0, 100);
-	}
-	else if (keycode >= 123 && keycode <= 126)
-	{
-		if (keycode == 123)			//	left arrow
-			p->param->origin.x -= 15;
-		else if (keycode == 124)	//	right arrow
-			p->param->origin.x += 15;
-		else if (keycode == 125)	//	down arrow
-			p->param->origin.y += 15;
-		else if (keycode == 126)	//	up arrow
-			p->param->origin.y -= 15;
-		img_destroy(p->img);
-		p->img = img_init(p->mlx_ptr, 2000, 1000);
-		img_fdf(p->img, p->fdf, p->param);
-		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img->img_ptr, 0, 100);
-	}
-	else if (keycode == 67 || keycode == 75)
-	{
-		if (keycode == 67)
-			++(p->param->altitude);
-		else if (keycode == 75)
-			--(p->param->altitude);
-		img_destroy(p->img);
-		p->img = img_init(p->mlx_ptr, 2000, 1000);
-		img_fdf(p->img, p->fdf, p->param);
-		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img->img_ptr, 0, 100);
-	}
+	else if (keycode == 31)			//	o
+		p->param->proj = proj_o;
+	else if (keycode == 8)			//	c
+		p->param->proj = proj_c;
+	else if (keycode == 123)		//	left arrow
+		p->param->origin.x -= 25 / p->param->zoom;
+	else if (keycode == 124)		//	right arrow
+		p->param->origin.x += 25 / p->param->zoom;
+	else if (keycode == 125)		//	down arrow
+		p->param->origin.y += 25 / p->param->zoom;
+	else if (keycode == 126)		//	up arrow
+		p->param->origin.y -= 25 / p->param->zoom;
+	else if (keycode == 67)			//	num *
+		++(p->param->altitude);
+	else if (keycode == 75)			//	num	/
+		--(p->param->altitude);
+	else if (keycode == 18)			//	1
+		p->param->color = 0xffffff;
+	else if (keycode == 19)			//	2
+		p->param->color = 0xffff00;
+	else if (keycode == 20)			//	3
+		p->param->color = 0x00ffff;
+	else if (keycode == 21)			//	4
+		p->param->color = 0xff00ff;
+	img_destroy(p->img);
+	p->img = img_init(p->mlx_ptr, 2000, 1000);
+	img_fdf(p->img, p->fdf, p->param);
+	mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img->img_ptr, 0, 100);
 	return (0);
 }
 
@@ -191,15 +171,15 @@ int		main(int argc, char **argv)
 
 	img_fdf(img, &fdf, &param);
 
-	void	*win_ptr = mlx_new_window(mlx_ptr, 2000, 1200, "Hello!");
+	void	*win_ptr = mlx_new_window(mlx_ptr, 2000, 1200, "FdF - syeresko");
 
 //	printf("window created\n");
 	mlx_put_image_to_window(mlx_ptr, win_ptr, img->img_ptr, 0, 100);
 
 	t_hook_param	hook_param = {mlx_ptr, win_ptr, img, &fdf, &param};
 
-	mlx_do_key_autorepeaton(mlx_ptr);
-	mlx_key_hook(win_ptr, key_hook, &hook_param);
+	mlx_hook(win_ptr, 2, 5, key_press, &hook_param);
+//	mlx_key_hook(win_ptr, key_hook, &hook_param);
 	mlx_loop(mlx_ptr);
 	return (0);
 }
