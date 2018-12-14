@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/14 15:33:44 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/14 19:41:17 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/14 19:43:44 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,24 +171,19 @@ int		key_press(int keycode, void *hook_param)
 
 	t_param *const	param = ((t_hook_param *)hook_param)->param;
 
-	if (key_press_zoom(keycode, param) == 0)
-		;
-	else if (key_press_rotate(keycode, param) == 0)
-		;
-	else if (key_press_projection(keycode, param) == 0)
-		;
-	else if (key_press_shift(keycode, param) == 0)
-		;
-	else if (key_press_altitude(keycode, param) == 0)
-		;
-	else if (key_press_color(keycode, param) == 0)
-		;
-	else if (key_press_z0(keycode, param) == 0)
-		;
-	img_destroy(p->img);
-	p->img = img_init(p->mlx_ptr, 2000, 1000);
-	img_fdf(p->img, p->fdf, p->param);
-	mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img->img_ptr, 0, 100);
+	if (key_press_zoom(keycode, param) == 0 ||
+		key_press_rotate(keycode, param) == 0 ||
+		key_press_projection(keycode, param) == 0 ||
+		key_press_shift(keycode, param) == 0 ||
+		key_press_altitude(keycode, param) == 0 ||
+		key_press_color(keycode, param) == 0 ||
+		key_press_z0(keycode, param) == 0)
+	{
+		img_destroy(p->img);
+		p->img = img_init(p->mlx_ptr, 2000, 1000);
+		img_fdf(p->img, p->fdf, p->param);
+		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img->img_ptr, 0, 100);
+	}
 	return (0);
 }
 
