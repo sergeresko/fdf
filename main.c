@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/14 15:33:44 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/14 15:34:01 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/14 19:41:17 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 #include <math.h>
 
+/*
 void	print_fdf(t_fdf const *fdf)
 {
 	int		i;
@@ -43,6 +44,7 @@ void	print_fdf(t_fdf const *fdf)
 		}
 	}
 }
+*/
 
 t_point3d	to3d(t_fdf *fdf, int x, int y, t_param *param);		//
 t_pixel		proj_ortho(t_point3d a, t_param *param);			//
@@ -59,9 +61,101 @@ t_pixel		proj_c(t_fdf *fdf, int x, int y, t_param *param)
 	return (proj_central(to3d(fdf, x, y, param), param));
 }
 
-//int		key_press_shift(int keycode, void *hook_param)
-//{
-//}
+int		key_press_shift(int keycode, t_param *param)
+{
+	if (keycode != 123 && keycode != 124 && keycode != 125 && keycode != 126)
+		return (-1);
+	if (keycode == 123)				//	left arrow
+		param->origin.x += 25 / param->zoom;
+	else if (keycode == 124)		//	right arrow
+		param->origin.x -= 25 / param->zoom;
+	else if (keycode == 125)		//	down arrow
+		param->origin.y -= 25 / param->zoom;
+	else if (keycode == 126)		//	up arrow
+		param->origin.y += 25 / param->zoom;
+	return (0);
+}
+
+int		key_press_zoom(int keycode, t_param *param)
+{
+	if (keycode != 24 && keycode != 27)
+		return (-1);
+	if (keycode == 24)				//	=
+		param->zoom *= 1.1;
+	else if (keycode == 27)			//	-
+		param->zoom /= 1.1;
+	return (0);
+}
+
+int		key_press_rotate(int keycode, t_param *param)
+{
+	int		axis;
+	double	angle;
+
+	if (keycode != 7 && keycode != 1 && keycode != 16 && keycode != 22 &&
+		keycode != 6 && keycode != 0)
+		return (-1);
+	if (keycode == 7 || keycode == 1)			//	x or s
+		axis = AXIS_X;
+	else if (keycode == 16 || keycode == 22)	//	y or 6
+		axis = AXIS_Y;
+	else										//	z or a
+		axis = AXIS_Z;
+	if (keycode == 7 || keycode == 16 || keycode == 6)
+		angle = M_PI / 30.;
+	else
+		angle = -M_PI / 30.;
+	rotate(&(param->rot), axis, angle);
+	return (0);
+}
+
+int		key_press_color(int keycode, t_param *param)
+{
+	if (keycode != 18 && keycode != 19 && keycode != 20 && keycode != 21)
+		return (-1);
+	if (keycode == 18)				//	1
+		param->color = 0xffffff;
+	else if (keycode == 19)			//	2
+		param->color = 0xffff00;
+	else if (keycode == 20)			//	3
+		param->color = 0x00ffff;
+	else if (keycode == 21)			//	4
+		param->color = 0xff00ff;
+	return (0);
+}
+
+int		key_press_altitude(int keycode, t_param *param)
+{
+	if (keycode != 67 && keycode != 75)
+		return (-1);
+	if (keycode == 67)				//	num *
+		++(param->altitude);
+	else if (keycode == 75)			//	num	/
+		--(param->altitude);
+	return (0);
+}
+
+int		key_press_z0(int keycode, t_param *param)
+{
+	if (keycode != 69 && keycode != 78)
+		return (-1);
+	if (keycode == 69)				//	num +
+		param->origin.z *= 1.1;
+	else if (keycode == 78)			//	num -
+		param->origin.z /= 1.1;
+	return (0);
+}
+
+int		key_press_projection(int keycode, t_param *param)
+{
+	if (keycode != 31 && keycode != 8)
+		return (-1);
+	if (keycode == 31)				//	o
+		param->proj = proj_o;
+	else if (keycode == 8)			//	c
+		param->proj = proj_c;
+	return (0);
+}
 
 int		key_press(int keycode, void *hook_param)
 {
@@ -74,52 +168,23 @@ int		key_press(int keycode, void *hook_param)
 		system("leaks a.out");
 		exit(0);
 	}
-	if (keycode == 24)				//	=
-		p->param->zoom *= 1.1;
-	else if (keycode == 27)			//	-
-		p->param->zoom /= 1.1;
-	else if (keycode == 7 || keycode == 1 || keycode == 16 || keycode == 22 ||
-		keycode == 6 || keycode == 0)
-	{
-		int		axis;
-		double	angle;
 
-		if (keycode == 7 || keycode == 1)			//	x or s
-			axis = AXIS_X;
-		else if (keycode == 16 || keycode == 22)	//	y or 6
-			axis = AXIS_Y;
-		else										//	z or a
-			axis = AXIS_Z;
-		if (keycode == 7 || keycode == 16 || keycode == 6)
-			angle = M_PI / 30.;
-		else
-			angle = -M_PI / 30.;
-		rotate(&(p->param->rot), axis, angle);
-	}
-	else if (keycode == 31)			//	o
-		p->param->proj = proj_o;
-	else if (keycode == 8)			//	c
-		p->param->proj = proj_c;
-	else if (keycode == 123)		//	left arrow
-		p->param->origin.x -= 25 / p->param->zoom;
-	else if (keycode == 124)		//	right arrow
-		p->param->origin.x += 25 / p->param->zoom;
-	else if (keycode == 125)		//	down arrow
-		p->param->origin.y += 25 / p->param->zoom;
-	else if (keycode == 126)		//	up arrow
-		p->param->origin.y -= 25 / p->param->zoom;
-	else if (keycode == 67)			//	num *
-		++(p->param->altitude);
-	else if (keycode == 75)			//	num	/
-		--(p->param->altitude);
-	else if (keycode == 18)			//	1
-		p->param->color = 0xffffff;
-	else if (keycode == 19)			//	2
-		p->param->color = 0xffff00;
-	else if (keycode == 20)			//	3
-		p->param->color = 0x00ffff;
-	else if (keycode == 21)			//	4
-		p->param->color = 0xff00ff;
+	t_param *const	param = ((t_hook_param *)hook_param)->param;
+
+	if (key_press_zoom(keycode, param) == 0)
+		;
+	else if (key_press_rotate(keycode, param) == 0)
+		;
+	else if (key_press_projection(keycode, param) == 0)
+		;
+	else if (key_press_shift(keycode, param) == 0)
+		;
+	else if (key_press_altitude(keycode, param) == 0)
+		;
+	else if (key_press_color(keycode, param) == 0)
+		;
+	else if (key_press_z0(keycode, param) == 0)
+		;
 	img_destroy(p->img);
 	p->img = img_init(p->mlx_ptr, 2000, 1000);
 	img_fdf(p->img, p->fdf, p->param);
@@ -162,8 +227,9 @@ int		main(int argc, char **argv)
 //	param.origin.x = 0.;
 //	param.origin.y = 0.;
 //	param.origin.z = 0.;
-	param.origin.x = 1000;
-	param.origin.y = 500;
+	param.origin.x = 1000.;
+	param.origin.y = 500.;
+	param.origin.z = 20. * ft_max(fdf.width, fdf.height);
 	param.proj = proj_o;
 
 	void	*mlx_ptr = mlx_init();
@@ -180,6 +246,7 @@ int		main(int argc, char **argv)
 
 	mlx_hook(win_ptr, 2, 5, key_press, &hook_param);
 //	mlx_key_hook(win_ptr, key_hook, &hook_param);
+//	mlx_do_key_autorepeaton(mlx_ptr);
 	mlx_loop(mlx_ptr);
 	return (0);
 }

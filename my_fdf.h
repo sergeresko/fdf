@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 17:27:27 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/14 15:08:50 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/14 18:57:30 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ typedef struct	s_img
 	int			size_line;
 	int			endian;
 }				t_img;
-
-//int				ft_abs(int n);	//	remove as it's now in libft
 
 t_img			*img_init(void *mlx_ptr, int width, int height);
 void			img_destroy(t_img *img);
@@ -74,9 +72,6 @@ typedef struct	s_point3d
 	double		z;
 }				t_point3d;
 
-//# define FDF_SIN		0x1.ac2609b3c576bp-4
-//# define FDF_COS		0x1.fd31f94f867c6p-1
-
 typedef double	t_matrix[3][3];
 
 typedef struct	s_param
@@ -85,8 +80,8 @@ typedef struct	s_param
 	double		zoom;
 	t_matrix	rot;
 	int			altitude;
-//	t_point3d	origin;
-	t_pixel		origin;
+	t_point3d	origin;
+//	t_pixel		origin;
 	t_pixel		(*proj)(t_fdf *fdf, int x, int y, struct s_param *param);
 }				t_param;
 
@@ -96,11 +91,6 @@ void			img_fdf(t_img *img, t_fdf *fdf, t_param *param);
 # define AXIS_Y		1
 # define AXIS_Z		2
 
-//void			rot_x(t_matrix *rot, int dir);
-//void			rot_y(t_matrix *rot, int dir);
-//void			rot_z(t_matrix *rot, int dir);
-/* TODO */
-//void			rotate(t_matrix *rot, int axis, double sin_phi, double cos_phi);
 void			rotate(t_matrix *rot, int axis, double angle);
 
 typedef struct	s_hook_param
