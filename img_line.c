@@ -25,7 +25,11 @@ static void	img_line_low(t_img *img, t_pixel p, t_pixel q)
 	error = 0;
 	while (p.x <= q.x)
 	{
-		img_pixel_put(img, p);
+		if (p.x >= img->width ||											//
+			(p.y < 0 && dir == -1) || (p.y >= img->height && dir == 1))		//
+			return ;														//
+		if (0 <= p.x && 0 <= p.y && p.y < img->height)						//
+			img_pixel_put(img, p);
 		error += dy;
 		if (2 * error >= dx)
 		{
@@ -46,7 +50,11 @@ static void	img_line_high(t_img *img, t_pixel p, t_pixel q)
 	error = 0;
 	while (p.y <= q.y)
 	{
-		img_pixel_put(img, p);
+		if (p.y >= img->height ||											//
+			(p.x < 0 && dir == -1) || (p.x >= img->height && dir == 1))		//
+			return ;														//
+		if (0 <= p.y && 0 <= p.x && p.x < img->width)						//
+			img_pixel_put(img, p);
 		error += dx;
 		if (2 * error >= dy)
 		{

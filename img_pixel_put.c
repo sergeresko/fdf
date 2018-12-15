@@ -15,12 +15,12 @@
 
 void	img_pixel_put(t_img *img, t_pixel p)
 {
-	int			index;
-	unsigned	color;
+	int const		index = img->size_line * p.y + img->bits_per_pixel / 8 * p.x;
+	unsigned const	color = mlx_get_color_value(img->mlx_ptr, p.color);
 
-	if (p.x < 0 || p.x >= img->width || p.y < 0 || p.y >= img->height)
-		return ;
-	index = img->size_line * p.y + img->bits_per_pixel / 8 * p.x;
-	color = mlx_get_color_value(img->mlx_ptr, p.color);
+//	if (p.x < 0 || p.x >= img->width || p.y < 0 || p.y >= img->height)
+//		return ;
+	//index = img->size_line * p.y + img->bits_per_pixel / 8 * p.x;
+	//color = mlx_get_color_value(img->mlx_ptr, p.color);
 	*(unsigned *)(img->addr + index) = color;
 }
