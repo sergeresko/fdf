@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/14 15:33:44 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/15 16:23:59 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/15 21:29:56 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,26 @@ void	print_fdf(t_fdf const *fdf)
 }
 */
 
+void		legend(void *mlx_ptr, void *win_ptr, int color)
+{
+	mlx_string_put(mlx_ptr, win_ptr, 200, 20, color,
+		"     shift:    (arrows)");
+	mlx_string_put(mlx_ptr, win_ptr, 200, 60, color,
+		"      zoom:    + -");
+	mlx_string_put(mlx_ptr, win_ptr, 1500, 20, color,
+		"    rotate:    x s  y 6  z a");
+	mlx_string_put(mlx_ptr, win_ptr, 1500, 60, color,
+		"  altitude:    * /  (numpad)");
+	mlx_string_put(mlx_ptr, win_ptr, 200, 1120, color,
+		"projection:    o c");
+	mlx_string_put(mlx_ptr, win_ptr, 200, 1160, color,
+		" viewpoint:    + -  (numpad)");
+	mlx_string_put(mlx_ptr, win_ptr, 1500, 1120, color,
+		"     color:    1 2 3 4 5");
+	mlx_string_put(mlx_ptr, win_ptr, 1500, 1160, color,
+		"      exit:    esc");
+}
+
 t_point3d	to3d(t_fdf *fdf, int x, int y, t_param *param);		//
 t_pixel		proj_ortho(t_point3d a, t_param *param);			//
 t_pixel		proj_central(t_point3d a, t_param *param);			//
@@ -69,26 +89,27 @@ t_pixel		proj_c(t_fdf *fdf, int x, int y, t_param *param)
 
 int		key_press_shift(int keycode, t_param *param)
 {
-	if (keycode != 123 && keycode != 124 && keycode != 125 && keycode != 126)
+	if (keycode != KEY_ARROW_LEFT && keycode != KEY_ARROW_RIGHT &&
+		keycode != KEY_ARROW_DOWN && keycode != KEY_ARROW_UP)
 		return (-1);
-	if (keycode == 123)				//	left arrow
+	if (keycode == KEY_ARROW_LEFT)
 		param->origin.x += 25 / param->zoom;
-	else if (keycode == 124)		//	right arrow
+	else if (keycode == KEY_ARROW_RIGHT)
 		param->origin.x -= 25 / param->zoom;
-	else if (keycode == 125)		//	down arrow
+	else if (keycode == KEY_ARROW_DOWN)
 		param->origin.y -= 25 / param->zoom;
-	else if (keycode == 126)		//	up arrow
+	else if (keycode == KEY_ARROW_UP)
 		param->origin.y += 25 / param->zoom;
 	return (0);
 }
 
 int		key_press_zoom(int keycode, t_param *param)
 {
-	if (keycode != 24 && keycode != 27)
+	if (keycode != KEY_EQUALS && keycode != KEY_MINUS)
 		return (-1);
-	if (keycode == 24)				//	=
+	if (keycode == KEY_EQUALS)
 		param->zoom *= 1.1;
-	else if (keycode == 27)			//	-
+	else if (keycode == KEY_MINUS)
 		param->zoom /= 1.1;
 	return (0);
 }
@@ -98,16 +119,16 @@ int		key_press_rotate(int keycode, t_param *param)
 	int		axis;
 	double	angle;
 
-	if (keycode != 7 && keycode != 1 && keycode != 16 && keycode != 22 &&
-		keycode != 6 && keycode != 0)
+	if (keycode != KEY_X && keycode != KEY_S && keycode != KEY_Y &&
+		keycode != KEY_6 && keycode != KEY_Z && keycode != KEY_A)
 		return (-1);
-	if (keycode == 7 || keycode == 1)			//	x or s
+	if (keycode == KEY_X || keycode == KEY_S)
 		axis = AXIS_X;
-	else if (keycode == 16 || keycode == 22)	//	y or 6
+	else if (keycode == KEY_Y || keycode == KEY_6)
 		axis = AXIS_Y;
-	else										//	z or a
+	else
 		axis = AXIS_Z;
-	if (keycode == 7 || keycode == 16 || keycode == 6)
+	if (keycode == KEY_X || keycode == KEY_Y || keycode == KEY_Z)
 		angle = M_PI / 30.;
 	else
 		angle = -M_PI / 30.;
@@ -117,48 +138,51 @@ int		key_press_rotate(int keycode, t_param *param)
 
 int		key_press_color(int keycode, t_param *param)
 {
-	if (keycode != 18 && keycode != 19 && keycode != 20 && keycode != 21)
+	if (keycode != KEY_1 && keycode != KEY_2 &&
+		keycode != KEY_3 && keycode != KEY_4 && keycode != KEY_5)
 		return (-1);
-	if (keycode == 18)				//	1
+	if (keycode == KEY_1)
 		param->color = 0xffffff;
-	else if (keycode == 19)			//	2
-		param->color = 0xffff00;
-	else if (keycode == 20)			//	3
-		param->color = 0x00ffff;
-	else if (keycode == 21)			//	4
-		param->color = 0xff00ff;
+	else if (keycode == KEY_2)
+		param->color = 0xff906b;
+	else if (keycode == KEY_3)
+		param->color = 0xfde74c;
+	else if (keycode == KEY_4)
+		param->color = 0xb9ff56;
+	else if (keycode == KEY_5)
+		param->color = 0x5bc0eb;
 	return (0);
 }
 
 int		key_press_altitude(int keycode, t_param *param)
 {
-	if (keycode != 67 && keycode != 75)
+	if (keycode != KEY_NUM_ASTERISK && keycode != KEY_NUM_SLASH)
 		return (-1);
-	if (keycode == 67)				//	num *
+	if (keycode == KEY_NUM_ASTERISK)
 		++(param->altitude);
-	else if (keycode == 75)			//	num	/
+	else if (keycode == KEY_NUM_SLASH)
 		--(param->altitude);
 	return (0);
 }
 
 int		key_press_z0(int keycode, t_param *param)
 {
-	if (keycode != 69 && keycode != 78)
+	if (keycode != KEY_NUM_PLUS && keycode != KEY_NUM_MINUS)
 		return (-1);
-	if (keycode == 69)				//	num +
+	if (keycode == KEY_NUM_PLUS)
 		param->origin.z *= 1.1;
-	else if (keycode == 78)			//	num -
+	else if (keycode == KEY_NUM_MINUS)
 		param->origin.z /= 1.1;
 	return (0);
 }
 
 int		key_press_projection(int keycode, t_param *param)
 {
-	if (keycode != 31 && keycode != 8)
+	if (keycode != KEY_O && keycode != KEY_C)
 		return (-1);
-	if (keycode == 31)				//	o
+	if (keycode == KEY_O)
 		param->proj = proj_o;
-	else if (keycode == 8)			//	c
+	else if (keycode == KEY_C)
 		param->proj = proj_c;
 	return (0);
 }
@@ -169,9 +193,9 @@ int		key_press(int keycode, void *hook_param)
 
 	p = (t_hook_param *)hook_param;
 //	ft_printf("%3d\n", keycode);
-	if (keycode == 53)				//	ESC
+	if (keycode == KEY_ESCAPE)
 	{
-		system("leaks a.out");
+//		system("leaks a.out");
 		exit(0);
 	}
 
@@ -213,7 +237,7 @@ int		main(int argc, char **argv)
 
 	t_param	param;
 	param.color = 0xffff00;
-	param.zoom = fmin(1000 / (20. * fdf.height), 2000 / (20. * fdf.width));
+	param.zoom = 0.8 * fmin(1000 / (20. * fdf.height), 2000 / (20. * fdf.width));
 	param.rot[0][0] = 1.;//sqrt(1. / 2.);
 	param.rot[0][1] = 0.;
 	param.rot[0][2] = 0.;//-sqrt(1. / 2.);
@@ -237,6 +261,7 @@ int		main(int argc, char **argv)
 	void	*win_ptr = mlx_new_window(mlx_ptr, 2000, 1200, "FdF - syeresko");
 
 //	printf("window created\n");
+	legend(mlx_ptr, win_ptr, 0xffffff);
 	mlx_put_image_to_window(mlx_ptr, win_ptr, img->img_ptr, 0, 100);
 
 	t_hook_param	hook_param = {mlx_ptr, win_ptr, img, &fdf, &param};

@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 17:27:27 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/14 18:57:30 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/15 20:55:05 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,30 @@ typedef struct	s_hook_param
 	t_fdf		*fdf;
 	t_param		*param;
 }				t_hook_param;
+
+# define KEY_X				7
+# define KEY_S				1
+# define KEY_Y				16
+# define KEY_6				22
+# define KEY_Z				6
+# define KEY_A				0
+# define KEY_1				18
+# define KEY_2				19
+# define KEY_3				20
+# define KEY_4				21
+# define KEY_5				23
+# define KEY_EQUALS			24
+# define KEY_MINUS			27
+# define KEY_NUM_ASTERISK	67
+# define KEY_NUM_SLASH		75
+# define KEY_NUM_PLUS		69
+# define KEY_NUM_MINUS		78
+# define KEY_O				31
+# define KEY_C				8
+# define KEY_ARROW_LEFT		123
+# define KEY_ARROW_RIGHT	124
+# define KEY_ARROW_DOWN		125
+# define KEY_ARROW_UP		126
+# define KEY_ESCAPE			53
 
 #endif
