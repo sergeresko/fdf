@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/14 15:33:44 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/14 19:43:44 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/15 16:23:59 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,13 @@ t_pixel		proj_o(t_fdf *fdf, int x, int y, t_param *param)
 
 t_pixel		proj_c(t_fdf *fdf, int x, int y, t_param *param)
 {
-	return (proj_central(to3d(fdf, x, y, param), param));
+	t_point3d const	a = to3d(fdf, x, y, param);
+	t_pixel			p;
+
+	p = proj_central(a, param);
+	if (a.z >= param->origin.z)
+		p.color = 0;
+	return (p);
 }
 
 int		key_press_shift(int keycode, t_param *param)
@@ -207,21 +213,17 @@ int		main(int argc, char **argv)
 
 	t_param	param;
 	param.color = 0xffff00;
-	param.zoom = 1.;
-	param.rot[0][0] = 1;
-	param.rot[0][1] = 0;
-	param.rot[0][2] = 0;
-	param.rot[1][0] = 0;
-	param.rot[1][1] = 1;
-	param.rot[1][2] = 0;
-	param.rot[2][0] = 0;
-	param.rot[2][1] = 0;
-	param.rot[2][2] = 1;
-//	rot_z(&(param.rot), 1);
+	param.zoom = fmin(1000 / (20. * fdf.height), 2000 / (20. * fdf.width));
+	param.rot[0][0] = 1.;//sqrt(1. / 2.);
+	param.rot[0][1] = 0.;
+	param.rot[0][2] = 0.;//-sqrt(1. / 2.);
+	param.rot[1][0] = 0.;//sqrt(1. / 6.);
+	param.rot[1][1] = 1.;//sqrt(2. / 3.);
+	param.rot[1][2] = 0.;//sqrt(1. / 6.);
+	param.rot[2][0] = 0.;//sqrt(1. / 3.);
+	param.rot[2][1] = 0.;//-sqrt(1. / 3.);
+	param.rot[2][2] = 1.;//sqrt(1. / 3.);
 	param.altitude = 5;
-//	param.origin.x = 0.;
-//	param.origin.y = 0.;
-//	param.origin.z = 0.;
 	param.origin.x = 1000.;
 	param.origin.y = 500.;
 	param.origin.z = 20. * ft_max(fdf.width, fdf.height);

@@ -32,6 +32,7 @@ t_pixel		proj_ortho(t_point3d a, t_param *param)
 	return (p);
 }
 
+/*
 t_pixel		proj_central(t_point3d a, t_param *param)
 {
 	double const	r = param->origin.z / (param->origin.z - a.z);
@@ -42,5 +43,18 @@ t_pixel		proj_central(t_point3d a, t_param *param)
 	p.x = 1000 + (r * a.x + param->origin.x - 1000) * param->zoom;
 	p.y = 500 + (r * a.y + param->origin.y - 500) * param->zoom;
 	p.color = param->color;
+	return (p);
+}
+*/
+
+t_pixel		proj_central(t_point3d a, t_param *param)
+{
+	double const	d = param->origin.z - a.z;
+	double const	r = param->origin.z / fmax(d, 0.1);
+	t_pixel			p;
+
+	p.x = 1000 + (r * a.x + param->origin.x - 1000) * param->zoom;
+	p.y = 500 + (r * a.y + param->origin.y - 500) * param->zoom;
+	p.color = (d > 0.) ? param->color: 0;
 	return (p);
 }

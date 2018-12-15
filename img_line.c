@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 17:27:02 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/15 13:26:23 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/15 15:34:15 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static void	img_line_low(t_img *img, t_pixel p, t_pixel q)
 	int const	dir = (p.y < q.y) ? 1 : -1;
 	int			error;
 
+	if (p.color == 0)		//
+		p.color = q.color;	//
 	error = 0;
 	while (p.x <= q.x)
 	{
@@ -47,6 +49,8 @@ static void	img_line_high(t_img *img, t_pixel p, t_pixel q)
 	int const	dir = (p.x < q.x) ? 1 : -1;
 	int			error;
 
+	if (p.color == 0)		//
+		p.color = q.color;	//
 	error = 0;
 	while (p.y <= q.y)
 	{
@@ -67,6 +71,8 @@ static void	img_line_high(t_img *img, t_pixel p, t_pixel q)
 
 void		img_line(t_img *img, t_pixel p, t_pixel q)
 {
+	if (p.color == 0 || q.color == 0)	//
+		return ;						//
 	if ((p.x < 0 && q.x < 0) || (p.x >= img->width && q.x >= img->width) ||
 		(p.y < 0 && q.y < 0) || (p.y >= img->height && q.y >= img->height))
 		return ;
