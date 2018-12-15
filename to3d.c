@@ -4,8 +4,8 @@
 
 t_point3d	to3d(t_fdf *fdf, int x, int y, t_param *param)
 {
-	double const	x0 = fdf->width / 2.;
-	double const	y0 = fdf->height / 2.;
+	double const	x0 = (fdf->width - 1) / 2.;
+	double const	y0 = (fdf->height - 1) / 2.;
 	t_point3d		a;
 	t_point3d		b;
 

@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 17:27:02 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/13 15:26:38 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/15 13:26:23 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ static void	img_line_low(t_img *img, t_pixel p, t_pixel q)
 	error = 0;
 	while (p.x <= q.x)
 	{
-		if (p.x >= img->width ||											//
-			(p.y < 0 && dir == -1) || (p.y >= img->height && dir == 1))		//
-			return ;														//
-		if (0 <= p.x && 0 <= p.y && p.y < img->height)						//
+		if (p.x >= img->width ||
+			(p.y < 0 && dir == -1) || (p.y >= img->height && dir == 1))
+			return ;
+		if (0 <= p.x && 0 <= p.y && p.y < img->height)
 			img_pixel_put(img, p);
 		error += dy;
 		if (2 * error >= dx)
@@ -50,10 +50,10 @@ static void	img_line_high(t_img *img, t_pixel p, t_pixel q)
 	error = 0;
 	while (p.y <= q.y)
 	{
-		if (p.y >= img->height ||											//
-			(p.x < 0 && dir == -1) || (p.x >= img->height && dir == 1))		//
-			return ;														//
-		if (0 <= p.y && 0 <= p.x && p.x < img->width)						//
+		if (p.y >= img->height ||
+			(p.x < 0 && dir == -1) || (p.x >= img->width && dir == 1))
+			return ;
+		if (0 <= p.y && 0 <= p.x && p.x < img->width)
 			img_pixel_put(img, p);
 		error += dx;
 		if (2 * error >= dy)
