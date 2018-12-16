@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 17:27:27 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 16:02:42 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 16:49:46 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct	s_fdf
 	int			**values;
 }				t_fdf;
 
-int				fdf_parse(int fd, t_fdf *fdf);
+t_fdf			*fdf_parse(int fd);
 
 typedef struct	s_point3d
 {

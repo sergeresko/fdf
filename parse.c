@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/10 20:49:44 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 16:02:58 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 17:14:15 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ static int	fdf_parse_into_list(int fd, t_rows **rlist, int *width, int *height)
 	int		width_curr;
 
 	*rlist = NULL;
+	*height = 0;
 	if (fdf_parse_line(fd, &row, width) < 0)
 		return (-1);
 //	if (*width == 0)
@@ -148,14 +149,19 @@ static int	fdf_parse_into_list(int fd, t_rows **rlist, int *width, int *height)
 **	The values of *fdf fields make sense only if the return value is 0.
 */
 
-int			fdf_parse(int fd, t_fdf *fdf)
+t_fdf		*fdf_parse(int fd)
 {
+	t_fdf	*fdf;
 	t_rows	*rlist;
 	t_rows	*next;
 	int		y;
 
+	fdf = (t_fdf *)malloc(sizeof(t_fdf));
 	if (fdf_parse_into_list(fd, &rlist, &(fdf->width), &(fdf->height)) < 0)
-		return (-1);
+	{
+		free(fdf);
+		return (NULL);
+	}
 	fdf->values = (int **)malloc(fdf->height * sizeof(int *));
 	y = fdf->height;
 	while (y--)
@@ -165,5 +171,5 @@ int			fdf_parse(int fd, t_fdf *fdf)
 		free(rlist);
 		rlist = next;
 	}
-	return (0);
+	return (fdf);
 }

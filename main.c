@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/14 15:33:44 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 16:46:29 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 17:18:11 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	print_fdf(t_fdf const *fdf)
 
 static t_param	*param_init(t_fdf const *fdf)
 {
-	t_param	*param;
+	t_param		*param;
 
 	param = (t_param *)malloc(sizeof(t_param));
 	param->color = COLOR_YELLOW;
@@ -70,7 +70,7 @@ static t_param	*param_init(t_fdf const *fdf)
 	return (param);
 }
 
-static void	legend(void *mlx_ptr, void *win_ptr, int color)
+static void		put_legend(void *mlx_ptr, void *win_ptr, int color)
 {
 	mlx_string_put(mlx_ptr, win_ptr, 200, 20, color,
 		"     shift:    (arrows)");
@@ -90,42 +90,31 @@ static void	legend(void *mlx_ptr, void *win_ptr, int color)
 		"      exit:    esc");
 }
 
-int			main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
-	int		fd;
-	t_fdf	fdf;
-	int		r;
+	int				fd;
+	t_hook_param	hp;
 	
 	if (argc != 2)
 		return (0);
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 		return (0);
-	r = fdf_parse(fd, &fdf);
+	hp.fdf = fdf_parse(fd);
 	close(fd);
 //	ft_printf("fdf_parse returned %d\n", r);
 //	system("leaks a.out");	//////////////////
-	if (r < 0)
+	if (hp.fdf == NULL)
 		return (0);
 //	print_fdf(&fdf);
-
-	t_param	*param = param_init(&fdf);
-	void	*mlx_ptr = mlx_init();
-	t_img	*img = img_init(mlx_ptr, 2000, 1000);
-
-	img_fdf(img, &fdf, param);
-
-	void	*win_ptr = mlx_new_window(mlx_ptr, 2000, 1200, "FdF - syeresko");
-
-//	printf("window created\n");
-	legend(mlx_ptr, win_ptr, 0xffffff);
-	mlx_put_image_to_window(mlx_ptr, win_ptr, img->img_ptr, 0, 100);
-
-	t_hook_param	hook_param = {mlx_ptr, win_ptr, img, &fdf, param};
-
-	mlx_hook(win_ptr, 2, 5, key_press, &hook_param);
-//	mlx_key_hook(win_ptr, key_hook, &hook_param);
-//	mlx_do_key_autorepeaton(mlx_ptr);
-	mlx_loop(mlx_ptr);
+	hp.param = param_init(hp.fdf);
+	hp.mlx_ptr = mlx_init();
+	hp.img = img_init(hp.mlx_ptr, 2000, 1000);
+	img_fdf(hp.img, hp.fdf, hp.param);
+	hp.win_ptr = mlx_new_window(hp.mlx_ptr, 2000, 1200, "FdF - syeresko");
+	put_legend(hp.mlx_ptr, hp.win_ptr, 0xffffff);
+	mlx_put_image_to_window(hp.mlx_ptr, hp.win_ptr, hp.img->img_ptr, 0, 100);
+	mlx_hook(hp.win_ptr, 2, 5, key_press, &hp);
+	mlx_loop(hp.mlx_ptr);
 	return (0);
 }
