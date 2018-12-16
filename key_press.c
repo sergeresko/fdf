@@ -6,14 +6,14 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 13:53:30 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 16:19:34 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 16:24:23 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
-#include <math.h>		// for M_PI
-#include <stdlib.h>		// for exit
+#include <math.h>
+#include <stdlib.h>
 
 static int	key_press_shift_zoom(int keycode, t_param *param)
 {

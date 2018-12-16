@@ -6,13 +6,13 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/14 15:33:44 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 16:02:01 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 16:46:29 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
-//#include <stdlib.h>			// for system
+#include <stdlib.h>			// for malloc
 #include "libft.h"			// for ft_max
 #include <unistd.h>
 #include <fcntl.h>
@@ -45,6 +45,30 @@ void	print_fdf(t_fdf const *fdf)
 	}
 }
 */
+
+static t_param	*param_init(t_fdf const *fdf)
+{
+	t_param	*param;
+
+	param = (t_param *)malloc(sizeof(t_param));
+	param->color = COLOR_YELLOW;
+	param->zoom = 0.8 * fmin(1000 / (20. * fdf->height), 2000 / (20. * fdf->width));
+	param->rot[0][0] = 1.;//sqrt(1. / 2.);
+	param->rot[0][1] = 0.;
+	param->rot[0][2] = 0.;//-sqrt(1. / 2.);
+	param->rot[1][0] = 0.;//sqrt(1. / 6.);
+	param->rot[1][1] = 1.;//sqrt(2. / 3.);
+	param->rot[1][2] = 0.;//sqrt(1. / 6.);
+	param->rot[2][0] = 0.;//sqrt(1. / 3.);
+	param->rot[2][1] = 0.;//-sqrt(1. / 3.);
+	param->rot[2][2] = 1.;//sqrt(1. / 3.);
+	param->altitude = 5;
+	param->origin.x = 1000.;
+	param->origin.y = 500.;
+	param->origin.z = 20. * ft_max(fdf->width, fdf->height);
+	param->proj = proj_o;
+	return (param);
+}
 
 static void	legend(void *mlx_ptr, void *win_ptr, int color)
 {
@@ -85,28 +109,11 @@ int			main(int argc, char **argv)
 		return (0);
 //	print_fdf(&fdf);
 
-	t_param	param;
-	param.color = COLOR_YELLOW;//0xffff00;
-	param.zoom = 0.8 * fmin(1000 / (20. * fdf.height), 2000 / (20. * fdf.width));
-	param.rot[0][0] = 1.;//sqrt(1. / 2.);
-	param.rot[0][1] = 0.;
-	param.rot[0][2] = 0.;//-sqrt(1. / 2.);
-	param.rot[1][0] = 0.;//sqrt(1. / 6.);
-	param.rot[1][1] = 1.;//sqrt(2. / 3.);
-	param.rot[1][2] = 0.;//sqrt(1. / 6.);
-	param.rot[2][0] = 0.;//sqrt(1. / 3.);
-	param.rot[2][1] = 0.;//-sqrt(1. / 3.);
-	param.rot[2][2] = 1.;//sqrt(1. / 3.);
-	param.altitude = 5;
-	param.origin.x = 1000.;
-	param.origin.y = 500.;
-	param.origin.z = 20. * ft_max(fdf.width, fdf.height);
-	param.proj = proj_o;
-
+	t_param	*param = param_init(&fdf);
 	void	*mlx_ptr = mlx_init();
 	t_img	*img = img_init(mlx_ptr, 2000, 1000);
 
-	img_fdf(img, &fdf, &param);
+	img_fdf(img, &fdf, param);
 
 	void	*win_ptr = mlx_new_window(mlx_ptr, 2000, 1200, "FdF - syeresko");
 
@@ -114,7 +121,7 @@ int			main(int argc, char **argv)
 	legend(mlx_ptr, win_ptr, 0xffffff);
 	mlx_put_image_to_window(mlx_ptr, win_ptr, img->img_ptr, 0, 100);
 
-	t_hook_param	hook_param = {mlx_ptr, win_ptr, img, &fdf, &param};
+	t_hook_param	hook_param = {mlx_ptr, win_ptr, img, &fdf, param};
 
 	mlx_hook(win_ptr, 2, 5, key_press, &hook_param);
 //	mlx_key_hook(win_ptr, key_hook, &hook_param);
