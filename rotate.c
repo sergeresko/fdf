@@ -6,11 +6,11 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 16:17:09 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 14:30:25 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 16:04:05 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "my_fdf.h"
+#include "fdf.h"
 #include <math.h>
 
 void	rotate(t_matrix *rot, int axis, double angle)

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   img_init.c                                         :+:      :+:    :+:   */
+/*   img.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/13 15:16:35 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 14:33:09 by syeresko         ###   ########.fr       */
+/*   Created: 2018/12/12 15:45:26 by syeresko          #+#    #+#             */
+/*   Updated: 2018/12/16 16:16:03 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "my_fdf.h"
+#include "fdf.h"
 #include "mlx.h"
 #include <stdlib.h>
 
@@ -29,4 +29,10 @@ t_img	*img_init(void *mlx_ptr, int width, int height)
 					&(img->bits_per_pixel), &(img->size_line), &(img->endian));
 	}
 	return (img);
+}
+
+void	img_destroy(t_img *img)
+{
+	mlx_destroy_image(img->mlx_ptr, img->img_ptr);
+	free(img);
 }

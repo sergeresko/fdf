@@ -6,14 +6,14 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 13:53:30 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 13:59:17 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 16:19:34 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "fdf.h"
 #include "mlx.h"
-#include <stdlib.h>		// for exit
-#include "my_fdf.h"
 #include <math.h>		// for M_PI
+#include <stdlib.h>		// for exit
 
 static int	key_press_shift_zoom(int keycode, t_param *param)
 {
@@ -55,23 +55,6 @@ static int	key_press_rotate(int keycode, t_param *param)
 	return (0);
 }
 
-static int	key_press_color(int keycode, t_param *param)
-{
-	if (keycode == KEY_1)
-		param->color = COLOR_WHITE;
-	else if (keycode == KEY_2)
-		param->color = COLOR_RED;//0xff906b;
-	else if (keycode == KEY_3)
-		param->color = COLOR_YELLOW;//0xfde74c;
-	else if (keycode == KEY_4)
-		param->color = COLOR_GREEN;//0xb9ff56;
-	else if (keycode == KEY_5)
-		param->color = COLOR_BLUE;//0x5bc0eb;
-	else
-		return (-1);
-	return (0);
-}
-
 static int	key_press_alt_z0_proj(int keycode, t_param *param)
 {
 	if (keycode == KEY_NUM_ASTERISK)
@@ -91,7 +74,24 @@ static int	key_press_alt_z0_proj(int keycode, t_param *param)
 	return (0);
 }
 
-int		key_press(int keycode, void *hook_param)
+static int	key_press_color(int keycode, t_param *param)
+{
+	if (keycode == KEY_1)
+		param->color = COLOR_WHITE;
+	else if (keycode == KEY_2)
+		param->color = COLOR_RED;
+	else if (keycode == KEY_3)
+		param->color = COLOR_YELLOW;
+	else if (keycode == KEY_4)
+		param->color = COLOR_GREEN;
+	else if (keycode == KEY_5)
+		param->color = COLOR_BLUE;
+	else
+		return (-1);
+	return (0);
+}
+
+int			key_press(int keycode, void *hook_param)
 {
 	t_hook_param	*p;
 
@@ -101,15 +101,14 @@ int		key_press(int keycode, void *hook_param)
 
 	t_param *const	param = ((t_hook_param *)hook_param)->param;
 
-	if (key_press_shift_zoom(keycode, param) == 0 ||
-		key_press_rotate(keycode, param) == 0 ||
-		key_press_color(keycode, param) == 0 ||
-		key_press_alt_z0_proj(keycode, param) == 0)
-	{
-		img_destroy(p->img);
-		p->img = img_init(p->mlx_ptr, 2000, 1000);
-		img_fdf(p->img, p->fdf, p->param);
-		mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img->img_ptr, 0, 100);
-	}
+	if (key_press_shift_zoom(keycode, param) &&
+			key_press_rotate(keycode, param) &&
+			key_press_alt_z0_proj(keycode, param) &&
+			key_press_color(keycode, param))
+		return (-1);
+	img_destroy(p->img);
+	p->img = img_init(p->mlx_ptr, 2000, 1000);
+	img_fdf(p->img, p->fdf, p->param);
+	mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img->img_ptr, 0, 100);
 	return (0);
 }

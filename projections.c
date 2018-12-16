@@ -6,12 +6,11 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 14:25:52 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 14:36:35 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 16:03:40 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "my_fdf.h"
-
+#include "fdf.h"
 #include <math.h>
 
 static t_point3d	to3d(t_fdf *fdf, int x, int y, t_param *param)

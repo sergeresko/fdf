@@ -6,13 +6,13 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/14 15:33:44 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 14:09:56 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 16:02:01 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "fdf.h"
 #include "mlx.h"
-//#include <stdlib.h>		// for exit
-#include "my_fdf.h"
+//#include <stdlib.h>			// for system
 #include "libft.h"			// for ft_max
 #include <unistd.h>
 #include <fcntl.h>
@@ -80,6 +80,7 @@ int			main(int argc, char **argv)
 	r = fdf_parse(fd, &fdf);
 	close(fd);
 //	ft_printf("fdf_parse returned %d\n", r);
+//	system("leaks a.out");	//////////////////
 	if (r < 0)
 		return (0);
 //	print_fdf(&fdf);

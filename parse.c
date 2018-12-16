@@ -6,15 +6,15 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/10 20:49:44 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 14:59:43 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 16:02:58 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "fdf.h"
 #include <stdlib.h>
 //#include <unistd.h>
 //#include <fcntl.h>
 #include "libft.h"
-#include "my_fdf.h"
 
 static int	word_count(char **tab)
 {
@@ -115,7 +115,7 @@ static int	fdf_parse_into_list(int fd, t_rows **rlist, int *width, int *height)
 //		free(array);
 //		return (-1);
 //	}
-	list_push(rlist, row);
+	rlist_push(rlist, row);
 	++(*height);
 /*
 	if (list_push(list, array) < 0)		//
@@ -131,12 +131,12 @@ static int	fdf_parse_into_list(int fd, t_rows **rlist, int *width, int *height)
 			// remove this line
 		{
 			free(row);
-			list_delete(*rlist);
+			rlist_delete(*rlist);
 			return (-1);
 		}
 		if (row == NULL)
 			return (0);
-		list_push(rlist, row);		// don't check if there's enough memory
+		rlist_push(rlist, row);		// don't check if there's enough memory
 		++(*height);
 	}
 }

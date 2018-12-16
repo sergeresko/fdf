@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   my_fdf.h                                           :+:      :+:    :+:   */
+/*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 17:27:27 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 14:53:24 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 16:02:42 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MY_FDF_H
-# define MY_FDF_H
+#ifndef FDF_H
+# define FDF_H
 
 typedef struct	s_pixel
 {
@@ -40,7 +40,7 @@ void			img_pixel_put(t_img *img, t_pixel p);
 void			img_line(t_img *img, t_pixel p, t_pixel q);
 
 /*
-**	int_list
+**	rlist
 */
 
 typedef struct	s_rows
@@ -49,8 +49,8 @@ typedef struct	s_rows
 	struct s_rows	*next;
 }				t_rows;
 
-int				list_push(t_rows **list, int *row);
-void			list_delete(t_rows *list);
+int				rlist_push(t_rows **list, int *row);
+void			rlist_delete(t_rows *list);
 
 /*
 **	fdf
@@ -87,9 +87,9 @@ typedef struct	s_param
 
 void			img_fdf(t_img *img, t_fdf *fdf, t_param *param);
 
-# define AXIS_X		0
-# define AXIS_Y		1
-# define AXIS_Z		2
+# define AXIS_X				0
+# define AXIS_Y				1
+# define AXIS_Z				2
 
 void			rotate(t_matrix *rot, int axis, double angle);
 
@@ -135,13 +135,7 @@ typedef struct	s_hook_param
 
 int				key_press(int keycode, void *hook_param);
 
-//t_point3d	to3d(t_fdf *fdf, int x, int y, t_param *param);		//
-//t_pixel		proj_ortho(t_point3d a, t_param *param);			//
-//t_pixel		proj_central(t_point3d a, t_param *param);			//
-
-
-t_pixel		proj_o(t_fdf *fdf, int x, int y, t_param *param);
-
-t_pixel		proj_c(t_fdf *fdf, int x, int y, t_param *param);
+t_pixel			proj_o(t_fdf *fdf, int x, int y, t_param *param);
+t_pixel			proj_c(t_fdf *fdf, int x, int y, t_param *param);
 
 #endif
