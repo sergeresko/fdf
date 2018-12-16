@@ -7,27 +7,27 @@
 **	TODO: Make the function void and remove checks.
 */
 
-int		list_push(t_int_list **list, int *array)
+int		list_push(t_rows **list, int *row)
 {
-	t_int_list	*elem;
+	t_rows	*elem;
 
-	elem = (t_int_list *)malloc(sizeof(t_int_list));
+	elem = (t_rows *)malloc(sizeof(t_rows));
 	if (elem)
 	{
-		elem->array = array;
+		elem->row = row;
 		elem->next = *list;
 		*list = elem;
 	}
 	return (elem ? 0 : -1);
 }
 
-void	list_delete(t_int_list *list)
+void	list_delete(t_rows *list)
 {
-	t_int_list	*next;
+	t_rows	*next;
 
 	while (list)
 	{
-		free(list->array);
+		free(list->row);
 		next = list->next;
 		free(list);
 		list = next;

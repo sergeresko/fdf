@@ -6,16 +6,15 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/13 15:16:35 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/13 15:16:37 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 14:33:09 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx.h"
-//#include <stdio.h>
-#include <stdlib.h>
 #include "my_fdf.h"
+#include "mlx.h"
+#include <stdlib.h>
 
-t_img		*img_init(void *mlx_ptr, int width, int height)
+t_img	*img_init(void *mlx_ptr, int width, int height)
 {
 	t_img	*img;
 
@@ -28,18 +27,6 @@ t_img		*img_init(void *mlx_ptr, int width, int height)
 		img->height = height;
 		img->addr = mlx_get_data_addr(img->img_ptr,
 					&(img->bits_per_pixel), &(img->size_line), &(img->endian));
-		/*
-		printf("img_init:(%p, %d, %d):\n", mlx_ptr, width, height);
-		printf("  img = %p\n", img);
-		printf("  img->mlx_ptr = %p\n", img->mlx_ptr);
-		printf("  img->img_ptr = %p\n", img->img_ptr);
-		printf("  img->width = %d\n", img->width);
-		printf("  img->height = %d\n", img->height);
-		printf("  img->data = %p\n", img->data);
-		printf("  img->bits_per_pixel: %d\n", img->bits_per_pixel);
-		printf("  img->size_line: %d\n", img->size_line);
-		printf("  img->endian: %d\n", img->endian);
-		*/
 	}
 	return (img);
 }

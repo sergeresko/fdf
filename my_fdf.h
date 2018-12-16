@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 17:27:27 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/15 20:55:05 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 14:53:24 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ void			img_line(t_img *img, t_pixel p, t_pixel q);
 **	int_list
 */
 
-typedef struct	s_int_list
+typedef struct	s_rows
 {
-	int					*array;
-	struct s_int_list	*next;
-}				t_int_list;
+	int				*row;
+	struct s_rows	*next;
+}				t_rows;
 
-int				list_push(t_int_list **list, int *array);
-void			list_delete(t_int_list *list);
+int				list_push(t_rows **list, int *row);
+void			list_delete(t_rows *list);
 
 /*
 **	fdf
@@ -126,5 +126,22 @@ typedef struct	s_hook_param
 # define KEY_ARROW_DOWN		125
 # define KEY_ARROW_UP		126
 # define KEY_ESCAPE			53
+
+# define COLOR_WHITE		0xeeeeee
+# define COLOR_RED			0xd01919
+# define COLOR_YELLOW		0xffe900
+# define COLOR_GREEN		0x19d800
+# define COLOR_BLUE			0x0befe0
+
+int				key_press(int keycode, void *hook_param);
+
+//t_point3d	to3d(t_fdf *fdf, int x, int y, t_param *param);		//
+//t_pixel		proj_ortho(t_point3d a, t_param *param);			//
+//t_pixel		proj_central(t_point3d a, t_param *param);			//
+
+
+t_pixel		proj_o(t_fdf *fdf, int x, int y, t_param *param);
+
+t_pixel		proj_c(t_fdf *fdf, int x, int y, t_param *param);
 
 #endif

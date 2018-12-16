@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/10 20:49:44 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/13 14:38:11 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 14:59:43 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "libft.h"
 #include "my_fdf.h"
 
-int		word_count(char **tab)
+static int	word_count(char **tab)
 {
 	int		count;
 
@@ -26,7 +26,7 @@ int		word_count(char **tab)
 	return (count);
 }
 
-void	free_str_array(char **tab)
+static void	free_str_array(char **tab)
 {
 	int		i;
 
@@ -53,7 +53,7 @@ void	free_str_array(char **tab)
 **	*width makes sense only if the return value is 0 and *array is not NULL.
 */
 
-int		fdf_parse_line(int fd, int **array, int *width)
+static int	fdf_parse_line(int fd, int **array, int *width)
 {
 	char	*line;
 	char	**tab;
@@ -102,20 +102,20 @@ int		fdf_parse_line(int fd, int **array, int *width)
 **	*width and *height make sense only if the return value is 0.
 */
 
-int		fdf_parse_into_list(int fd, t_int_list **list, int *width, int *height)
+static int	fdf_parse_into_list(int fd, t_rows **rlist, int *width, int *height)
 {
-	int		*array;
+	int		*row;
 	int		width_curr;
 
-	*list = NULL;
-	if (fdf_parse_line(fd, &array, width) < 0)
+	*rlist = NULL;
+	if (fdf_parse_line(fd, &row, width) < 0)
 		return (-1);
 //	if (*width == 0)
 //	{
 //		free(array);
 //		return (-1);
 //	}
-	list_push(list, array);
+	list_push(rlist, row);
 	++(*height);
 /*
 	if (list_push(list, array) < 0)		//
@@ -126,17 +126,17 @@ int		fdf_parse_into_list(int fd, t_int_list **list, int *width, int *height)
 */
 	while (1)
 	{
-		if (fdf_parse_line(fd, &array, &width_curr) < 0 || width_curr != *width)
+		if (fdf_parse_line(fd, &row, &width_curr) < 0 || width_curr != *width)
 			/* || (array && list_push(list, array) < 0) */
 			// remove this line
 		{
-			free(array);
-			list_delete(*list);
+			free(row);
+			list_delete(*rlist);
 			return (-1);
 		}
-		if (array == NULL)
+		if (row == NULL)
 			return (0);
-		list_push(list, array);		// don't check if there's enough memory
+		list_push(rlist, row);		// don't check if there's enough memory
 		++(*height);
 	}
 }
@@ -148,24 +148,22 @@ int		fdf_parse_into_list(int fd, t_int_list **list, int *width, int *height)
 **	The values of *fdf fields make sense only if the return value is 0.
 */
 
-int		fdf_parse(int fd, t_fdf *fdf)
+int			fdf_parse(int fd, t_fdf *fdf)
 {
-	t_int_list	*rev_list;
-	t_int_list	*next;
-	int			y;
+	t_rows	*rlist;
+	t_rows	*next;
+	int		y;
 
-	if (fdf_parse_into_list(fd, &rev_list, &(fdf->width), &(fdf->height)) < 0)
+	if (fdf_parse_into_list(fd, &rlist, &(fdf->width), &(fdf->height)) < 0)
 		return (-1);
 	fdf->values = (int **)malloc(fdf->height * sizeof(int *));
 	y = fdf->height;
 	while (y--)
 	{
-		fdf->values[y] = rev_list->array;
-		next = rev_list->next;
-		free(rev_list);
-		rev_list = next;
+		fdf->values[y] = rlist->row;
+		next = rlist->next;
+		free(rlist);
+		rlist = next;
 	}
 	return (0);
 }
-
-

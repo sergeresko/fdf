@@ -6,12 +6,12 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 15:45:26 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/14 15:17:15 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 14:33:26 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx.h"
 #include "my_fdf.h"
+#include "mlx.h"
 #include <stdlib.h>
 
 void	img_destroy(t_img *img)

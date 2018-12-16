@@ -6,12 +6,12 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 12:18:38 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/15 13:31:41 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 14:33:04 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "my_fdf.h"
+#include <stdlib.h>
 
 void	img_fdf(t_img *img, t_fdf *fdf, t_param *param)
 {
