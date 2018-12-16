@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 17:27:02 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 16:14:11 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 17:33:35 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,8 @@
 void		img_pixel_put(t_img *img, t_pixel p)
 {
 	int const		index = img->size_line * p.y + 4 * p.x;
-//	int const		index = img->size_line * p.y + img->bits_per_pixel / 8 * p.x;
 	unsigned const	color = mlx_get_color_value(img->mlx_ptr, p.color);
 
-	if (p.x < 0 || p.x >= img->width || p.y < 0 || p.y >= img->height)	//
-		ft_putstr("fuck\n");											//
 	*(unsigned *)(img->addr + index) = color;
 }
 

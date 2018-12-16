@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/14 15:33:44 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 17:18:11 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 18:19:26 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static t_param	*param_init(t_fdf const *fdf)
 
 	param = (t_param *)malloc(sizeof(t_param));
 	param->color = COLOR_YELLOW;
-	param->zoom = 0.8 * fmin(1000 / (20. * fdf->height), 2000 / (20. * fdf->width));
+	param->zoom = fmin(1000 / fdf->height, 2000 / fdf->width) / 25.;
 	param->rot[0][0] = 1.;//sqrt(1. / 2.);
 	param->rot[0][1] = 0.;
 	param->rot[0][2] = 0.;//-sqrt(1. / 2.);
@@ -66,7 +66,7 @@ static t_param	*param_init(t_fdf const *fdf)
 	param->origin.x = 1000.;
 	param->origin.y = 500.;
 	param->origin.z = 20. * ft_max(fdf->width, fdf->height);
-	param->proj = proj_o;
+	param->proj = proj_orthogonal;
 	return (param);
 }
 

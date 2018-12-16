@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 15:06:02 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 16:03:55 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 17:25:17 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 /*
 **	Adds a new element to the beginning of the list.
 **	Returns 0 on success and -1 if memory couldn't be allocated.
-**	TODO: Make the function void and remove checks.
 */
 
 int		rlist_push(t_rows **rlist, int *row)

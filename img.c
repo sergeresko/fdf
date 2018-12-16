@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 15:45:26 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 16:16:03 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 17:31:40 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,8 @@
 
 t_img	*img_init(void *mlx_ptr, int width, int height)
 {
-	t_img	*img;
+	t_img *const	img = (t_img *)malloc(sizeof(t_img));
 
-	img = (t_img *)malloc(sizeof(t_img));
 	if (img)
 	{
 		img->mlx_ptr = mlx_ptr;

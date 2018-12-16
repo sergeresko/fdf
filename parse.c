@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/10 20:49:44 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 17:14:15 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 17:44:34 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,13 +141,6 @@ static int	fdf_parse_into_list(int fd, t_rows **rlist, int *width, int *height)
 		++(*height);
 	}
 }
-
-/*
-**	Return values:
-**		-1		--	if fdf_parse_into_list failed
-**		0		--	on success
-**	The values of *fdf fields make sense only if the return value is 0.
-*/
 
 t_fdf		*fdf_parse(int fd)
 {

@@ -6,7 +6,7 @@
 /*   By: syeresko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 13:53:30 by syeresko          #+#    #+#             */
-/*   Updated: 2018/12/16 16:24:23 by syeresko         ###   ########.fr       */
+/*   Updated: 2018/12/16 18:19:48 by syeresko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ static int	key_press_alt_z0_proj(int keycode, t_param *param)
 	else if (keycode == KEY_NUM_MINUS)
 		param->origin.z /= 1.1;
 	else if (keycode == KEY_O)
-		param->proj = proj_o;
+		param->proj = proj_orthogonal;
 	else if (keycode == KEY_C)
-		param->proj = proj_c;
+		param->proj = proj_central;
 	else
 		return (-1);
 	return (0);
@@ -93,22 +93,18 @@ static int	key_press_color(int keycode, t_param *param)
 
 int			key_press(int keycode, void *hook_param)
 {
-	t_hook_param	*p;
+	t_hook_param *const	hp = (t_hook_param *)hook_param;
 
-	p = (t_hook_param *)hook_param;
 	if (keycode == KEY_ESCAPE)
 		exit(0);
-
-	t_param *const	param = ((t_hook_param *)hook_param)->param;
-
-	if (key_press_shift_zoom(keycode, param) &&
-			key_press_rotate(keycode, param) &&
-			key_press_alt_z0_proj(keycode, param) &&
-			key_press_color(keycode, param))
+	if (key_press_shift_zoom(keycode, hp->param) &&
+			key_press_rotate(keycode, hp->param) &&
+			key_press_alt_z0_proj(keycode, hp->param) &&
+			key_press_color(keycode, hp->param))
 		return (-1);
-	img_destroy(p->img);
-	p->img = img_init(p->mlx_ptr, 2000, 1000);
-	img_fdf(p->img, p->fdf, p->param);
-	mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, p->img->img_ptr, 0, 100);
+	img_destroy(hp->img);
+	hp->img = img_init(hp->mlx_ptr, 2000, 1000);
+	img_fdf(hp->img, hp->fdf, hp->param);
+	mlx_put_image_to_window(hp->mlx_ptr, hp->win_ptr, hp->img->img_ptr, 0, 100);
 	return (0);
 }
